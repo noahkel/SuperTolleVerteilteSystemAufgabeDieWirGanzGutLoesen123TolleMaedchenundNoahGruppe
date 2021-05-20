@@ -1,0 +1,12 @@
+
+http://127.0.0.1:5000/createBlackboard?name=myblackboard&gueltigkeit=50
+
+http://127.0.0.1:5000/displayBlackboard?name=myblackboard&daten=welcomeetoooyouuu
+
+127.0.0.1:5000/readBlackboard?name=myblackboard
+
+http://127.0.0.1:5000/clearBlackboard?name=myblackboard
+
+http://localhost:5000/getBlackboardStatus?name=myblackboard
+
+http://localhost:5000/listBlackboards

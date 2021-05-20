@@ -1,0 +1,3 @@
+# SuperTolleVerteilteSystemAufgabeDieWirGanzGutLoesen123TolleMaedchenundNoahGruppe
+
+start the flask server with flask run 

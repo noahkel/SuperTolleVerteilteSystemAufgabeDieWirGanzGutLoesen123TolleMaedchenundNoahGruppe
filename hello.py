@@ -1,5 +1,5 @@
 from flask import Flask,jsonify
-from flask import request
+from flask import request, render_template
 import json 
 import time
 
@@ -19,7 +19,7 @@ blackboards = {}
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return render_template('index.html')
 
 @app.route('/newtable')
 def query_example():

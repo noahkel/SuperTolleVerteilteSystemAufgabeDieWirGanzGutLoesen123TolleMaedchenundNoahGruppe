@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackboards|HowTo</title>
+  </head>
+  <body style="font-family:verdana;">
+    <!-- Sichtbarer Dokumentinhalt im body -->
+    <h1>Willkommen auf unserer Blackboard Seite!</h1>
+    <h4>Um ein neues Blackboard zu erstellen (name: Name des Blackboards, gueltigkeit: Ablaufzeit in Sekunden): </h4>
+    <p>http://127.0.0.1:5000/createBlackboard?name=myblackboard&gueltigkeit=50</p>
+
+    <hr>
+
+    <h4>Aktualisiert den Inhalt und Zeitstempel des Blackboard (name: Name des Blackboards, daten: neue Information): </h4>
+    <p>http://127.0.0.1:5000/displayBlackboard?name=myblackboard&daten=welcomeetoooyouuu</p>
+    <hr>
+    <h4>Liest den Inhalt eines Blackboards aus. Zusätzlich wird die Gültigkeit der Daten signalisiert. Wenn Nachricht veraltet ist wird diese Information gegeben (name: Name des Blackboards): </h4>
+    <p>http://127.0.0.1:5000/readBlackboard?name=myblackboard </p>
+    <hr>
+    <h4>Löscht den Inhalt eines Blackboards. Blackboard ist nicht mehr Gültig  (name: Name des Blackboards):</h4>
+    <p>http://127.0.0.1:5000/clearBlackboard?name=myblackboard</p>
+    <hr>
+    <h4>Gibt den aktuellen Status eines Blackboards zurück (name: Name des Blackboards):</h4>
+    <p>http://localhost:5000/getBlackboardStatus?name=myblackboard</p>
+    <hr>
+    <h4>Gibt eine Übersicht über alle vorhandenen Blackboard zurück: </h4>
+    <p>http://localhost:5000/listBlackboards</p>
+    <hr>
+    <h4>Löscht alle vorhandenen Blackboards: </h4>
+    <p>http://localhost:5000/deleteAllBlackboards</p>
+  </body>
+</html>

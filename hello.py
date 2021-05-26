@@ -1,4 +1,4 @@
-from flask import Flask,jsonify
+from flask import Flask,jsonify, Markup
 from flask import request, render_template
 import json 
 import time
@@ -21,26 +21,19 @@ blackboards = {}
 def hello_world():
     return render_template('index.html')
 
-@app.route('/newtable')
-def query_example():
-    # if key doesn't exist, returns None
-    language = request.args.get('table')
-
-    return '''<h1>The table name is: {}</h1>'''.format(language)
-
 #localhost:5000/createBlackboard?name=AlexandrasBlackboard&gueltigkeit=5000
 @app.route('/createBlackboard')
 def create_blackboard():
     name = request.args.get('name')
     if len(name) > 32:
-        return '''<h1>Name darf maximal 32 Zeichen besitzen</h1>'''
+        return render_template('template.html', variable= "Name darf maximal 32 Zeichen besitzen." )
        
     gueltigkeit = request.args.get('gueltigkeit', type=float)
     if gueltigkeit == None:
-        return '''<h1>Gültigkeit muss ne nummer sein du schlingel</h1>'''
+        return render_template('template.html', variable= "Gültigkeit muss ne nummer sein du schlingel." )
 
     if name in blackboards:
-        return '''<h1>Dieses Blackboard gibt es schon du schlingel</h1>'''
+        return render_template('template.html', variable= "Dieses Blackboard gibt es schon du schlingel." )
     if gueltigkeit == 0:
         ablaufzeit = time.time()
     else:
@@ -51,7 +44,7 @@ def create_blackboard():
     "Gueltigkeit" : ablaufzeit,
     "DeltaZeit": gueltigkeit
     }
-    return jsonify(blackboards)
+    return render_template('template.html', variable="Blackboard " + name + " wurde erstellt." )
 
 #localhost:5000/displayBlackboard?name=AlexandrasBlackboard&daten=hallo zusammen parti bei mir
 #displayBlackboard
@@ -60,7 +53,7 @@ def display_blackboard():
     name = request.args.get('name')
     daten = request.args.get('daten')#check ob es die parameter gibt
     if len(daten) > 420:
-        return '''<h1>Daten darf maximal 420 Zeichen besitzen du schlingel</h1>'''
+        return render_template('template.html', variable="Daten darf maximal 420 Zeichen besitzen du Schlingel." )
     if name in blackboards:
         deltazeit = float(blackboards[name]["DeltaZeit"])
         if deltazeit == 0:
@@ -72,9 +65,9 @@ def display_blackboard():
             "Gueltigkeit" : ablaufzeit,
             "DeltaZeit": deltazeit
             }
-        return jsonify(blackboards)
+        return render_template('template.html', variable="Blackboard " + name + " wurde erfolgreich aktualisiert." )
     else:
-        return '''<h1>Blackboard existiert nicht du Schlingel</h1>'''
+        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
     
 #localhost:5000/clearBlackboard?name=AlexandrasBlackboard
 #clearBlackboard
@@ -84,9 +77,9 @@ def clear_blackboard():
     if name in blackboards:
         blackboards[name]["Daten"]  = ""
         blackboards[name]["Gueltigkeit"]= time.time()
-        return jsonify(blackboards)
+        return render_template('template.html', variable="Blackboard " + name + " wurde erfolgreich aktualisiert." )
     else:
-        return '''<h1>Blackboard existiert nicht du Schlingel</h1>'''
+        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
 #localhost:5000/readBlackboard?name=AlexandrasBlackboard
 #readBlackboard
@@ -96,11 +89,13 @@ def read_blackboard():
     if name in blackboards:
         if time.time()<blackboards[name]["Gueltigkeit"] or blackboards[name]["DeltaZeit"] == 0  :
             gueltigkeit = "Gültig"
+            farbe = "green"
         else:
             gueltigkeit = "Ungültig"
-        return '''<h1>{}</h1> <h1>{}</h1>'''.format(gueltigkeit, str(blackboards[name]["Daten"]))
+            farbe = "red"
+        return render_template('template.html', farbe=farbe, variable =gueltigkeit,variable2= str(blackboards[name]["Daten"]) )
     else:
-        return '''<h1>Blackboard existiert nicht du Schlingel</h1>'''
+        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
 #localhost:5000/getBlackboardStatus?name=AlexandrasBlackboard
 #getBlackboardStatus
@@ -118,25 +113,27 @@ def get_blackboard_status():
         
         if time.time()<blackboards[name]["Gueltigkeit"] or blackboards[name]["DeltaZeit"] == 0  :
             gueltigkeit = "Gültig"
+            farbe = "green"
         else:
             gueltigkeit = "Ungültig"
-
-        return '''<h1>{}</h1> <h1>{}</h1><h1>Aktualisiert am: {}</h1>'''.format(volloderleer, gueltigkeit,aktualisierung)
+            farbe = "red"
+        return render_template('template.html',farbe = farbe,variable =gueltigkeit,variable2= volloderleer, variable3 = "Aktualisiert am: "+ aktualisierung  )
    
     else:
-        return '''<h1>Blackboard existiert nicht du Schlingel</h1>'''
+        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
 #localhost:5000/listBlackboards
 #list
 @app.route('/listBlackboards')
 def list_blackboards():
     if len(blackboards.keys()) == 0:
-        return '''<h1>Kein Blackboard existiert du Schlingel</h1>'''
+        return render_template('template.html', variable="Kein Blackboard existiert.")
     else:
-        namen = "<h1>Die Vorhandenen Blackboards sind: </h1>"
+        namen = ""
         for name in blackboards.keys():
-            namen += "<h1>" + name + "</h1>"
-        return '''{}'''.format(namen)
+            namen += name + '<br>'
+        namen =  Markup(namen)
+        return render_template('template.html', variable="Die vorhandenen Blackboards sind: ", variable2 = namen)
 
 #localhost:5000/deleteBlackboard?name=AlexandrasBlackboard
 #delete
@@ -145,13 +142,13 @@ def delete_blackboard():
     name = request.args.get('name')
     if name in blackboards:
         del blackboards[name]
-        return jsonify(blackboards)
+        return render_template('template.html', variable="Blackboard " + name + " wurde erfolgreich gelöscht." )
     else:
-        return '''<h1>Was es nicht gibt kann man nicht löschen Sie Schlingel</h1>'''
+        return render_template('template.html', variable="Was es nicht gibt, kann man nicht löschen :).")
 
 #localhost:5000/deleteAllBlackboards
 #deleteAllBlackboards
 @app.route('/deleteAllBlackboards')
 def delete_all_blackboard():
     blackboards.clear()
-    return jsonify(blackboards)
+    return render_template('template.html', variable="Alle Blackboards wurden gelöscht.")

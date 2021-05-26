@@ -1,21 +1,18 @@
+import logging
 from flask import Flask,jsonify, Markup
 from flask import request, render_template
 import json 
 import time
 
+
 app = Flask(__name__)
 
-#blackboards = { "meinBlackboard": 
-#    {"Daten" : "HeutePartyInTheHood" , 
-#    "Gueltikgkeit" : 1565645464.15,
-#    "DeltaZeit": 5
-#    },
-#    "NoahsBlackboard":
-#    {"Daten" : "HeutePartyInTheHood" , 
-#    "Gueltikgkeit" : 1565645464.15
-#    },
-#}
+logger = logging.getLogger('werkzeug') # grabs underlying WSGI logger
+handler = logging.FileHandler('logfile.log') # creates handler for the log file
+logger.addHandler(handler)
+
 blackboards = {}
+
 
 @app.route('/')
 def hello_world():

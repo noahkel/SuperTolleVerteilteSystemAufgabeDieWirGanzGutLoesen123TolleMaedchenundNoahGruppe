@@ -31,10 +31,10 @@ def create_blackboard():
        
     gueltigkeit = request.args.get('gueltigkeit', type=float)
     if gueltigkeit == None:
-        return render_template('template.html', variable= "Gültigkeit muss ne nummer sein du schlingel." )
+        return render_template('template.html', variable= "Gültigkeit muss in Sekunden angegeben werden. Zeiten sind Zahlen." )
 
     if name in blackboards:
-        return render_template('template.html', variable= "Dieses Blackboard gibt es schon du schlingel." )
+        return render_template('template.html', variable= "Dieses Blackboard existiert schon. Versuchen Sie es mit einem andren Namen." )
     if gueltigkeit == 0:
         ablaufzeit = time.time()
     else:
@@ -55,7 +55,7 @@ def display_blackboard():
     name = request.args.get('name')
     daten = request.args.get('daten')#check ob es die parameter gibt
     if len(daten) > 420:
-        return render_template('template.html', variable="Daten darf maximal 420 Zeichen besitzen du Schlingel." )
+        return render_template('template.html', variable="Daten darf maximal 420 Zeichen. Versuchen Sie es mit einer kürzeren Nachricht." )
     if name in blackboards:
         deltazeit = float(blackboards[name]["DeltaZeit"])
         if deltazeit == 0:
@@ -69,7 +69,7 @@ def display_blackboard():
             }
         return render_template('template.html', variable="Blackboard " + name + " wurde erfolgreich aktualisiert." )
     else:
-        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
+        return render_template('template.html', variable="Blackboard existiert nicht.")
     
 #localhost:5000/clearBlackboard?name=Name_des_Blackboards
 #Löscht den Inhalt eines Blackboards. Blackboard ist nicht mehr Gültig
@@ -82,7 +82,7 @@ def clear_blackboard():
         blackboards[name]["Gueltigkeit"]= time.time()
         return render_template('template.html', variable="Blackboard " + name + " wurde erfolgreich aktualisiert." )
     else:
-        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
+        return render_template('template.html', variable="Blackboard existiert nicht.")
 
 #localhost:5000/readBlackboard?name=Name_des_Blackboards
 #Liest den Inhalt eines Blackboards aus. Zusätzlich wird die Gültigkeit der Daten signalisiert.
@@ -100,7 +100,7 @@ def read_blackboard():
             farbe = "red"
         return render_template('template.html', farbe=farbe, variable =gueltigkeit,variable2= str(blackboards[name]["Daten"]) )
     else:
-        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
+        return render_template('template.html', variable="Blackboard existiert nicht.")
 
 #localhost:5000/getBlackboardStatus?name=Name_des_Blackboards
 #Gibt den aktuellen Status eines Blackboards zurück
@@ -126,7 +126,7 @@ def get_blackboard_status():
         return render_template('template.html',farbe = farbe,variable =gueltigkeit,variable2= volloderleer, variable3 = "Aktualisiert am: "+ aktualisierung  )
    
     else:
-        return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
+        return render_template('template.html', variable="Blackboard existiert nicht.")
 
 #localhost:5000/listBlackboards
 #Gibt eine Übersicht über alle vorhandenen Blackboard zurück

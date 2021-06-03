@@ -13,12 +13,16 @@ logger.addHandler(handler)
 
 blackboards = {}
 
-
+#localhost:5000/
+#Anleitung aller Funktionen und Zugriff darauf.
 @app.route('/')
 def hello_world():
     return render_template('index.html')
 
-#localhost:5000/createBlackboard?name=AlexandrasBlackboard&gueltigkeit=5000
+
+#localhost:5000/createBlackboard?name=Name_des_Blackboards&gueltigkeit=Dauer_der_Gültigkeit_des_Blackboards_in_Sekunden
+#Erstellung eines neuen Blackboards
+#name: Name des Blackboards, gueltigkeit: Ablaufzeit in Sekunden
 @app.route('/createBlackboard')
 def create_blackboard():
     name = request.args.get('name')
@@ -43,8 +47,9 @@ def create_blackboard():
     }
     return render_template('template.html', variable="Blackboard " + name + " wurde erstellt." )
 
-#localhost:5000/displayBlackboard?name=AlexandrasBlackboard&daten=hallo zusammen parti bei mir
-#displayBlackboard
+#localhost:5000/displayBlackboard?name=Name_des_Blackboards&daten=Daten_des_Blackboards
+#Aktualisiert den Inhalt und Zeitstempel des Blackboard
+#name: Name des Blackboards, daten: neue Information
 @app.route('/displayBlackboard')
 def display_blackboard():
     name = request.args.get('name')
@@ -66,8 +71,9 @@ def display_blackboard():
     else:
         return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
     
-#localhost:5000/clearBlackboard?name=AlexandrasBlackboard
-#clearBlackboard
+#localhost:5000/clearBlackboard?name=Name_des_Blackboards
+#Löscht den Inhalt eines Blackboards. Blackboard ist nicht mehr Gültig
+#name: Name des Blackboards
 @app.route('/clearBlackboard')
 def clear_blackboard():
     name = request.args.get('name')
@@ -78,8 +84,10 @@ def clear_blackboard():
     else:
         return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
-#localhost:5000/readBlackboard?name=AlexandrasBlackboard
-#readBlackboard
+#localhost:5000/readBlackboard?name=Name_des_Blackboards
+#Liest den Inhalt eines Blackboards aus. Zusätzlich wird die Gültigkeit der Daten signalisiert.
+#Wenn Nachricht veraltet ist wird diese Information gegeben.
+#name: Name des Blackboards
 @app.route('/readBlackboard')
 def read_blackboard():
     name = request.args.get('name')
@@ -94,8 +102,9 @@ def read_blackboard():
     else:
         return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
-#localhost:5000/getBlackboardStatus?name=AlexandrasBlackboard
-#getBlackboardStatus
+#localhost:5000/getBlackboardStatus?name=Name_des_Blackboards
+#Gibt den aktuellen Status eines Blackboards zurück
+#name: Name des Blackboards
 @app.route('/getBlackboardStatus')
 def get_blackboard_status():
     name = request.args.get('name')
@@ -120,7 +129,7 @@ def get_blackboard_status():
         return render_template('template.html', variable="Blackboard existiert nicht du Schlingel.")
 
 #localhost:5000/listBlackboards
-#list
+#Gibt eine Übersicht über alle vorhandenen Blackboard zurück
 @app.route('/listBlackboards')
 def list_blackboards():
     if len(blackboards.keys()) == 0:
@@ -132,8 +141,9 @@ def list_blackboards():
         namen =  Markup(namen)
         return render_template('template.html', variable="Die vorhandenen Blackboards sind: ", variable2 = namen)
 
-#localhost:5000/deleteBlackboard?name=AlexandrasBlackboard
-#delete
+#localhost:5000/deleteBlackboard?name=Name_des_Blackboards
+#Löscht ein Blackboard
+#name: Name des Blackboards
 @app.route('/deleteBlackboard')
 def delete_blackboard():
     name = request.args.get('name')
@@ -144,7 +154,7 @@ def delete_blackboard():
         return render_template('template.html', variable="Was es nicht gibt, kann man nicht löschen :).")
 
 #localhost:5000/deleteAllBlackboards
-#deleteAllBlackboards
+#Löscht alle vorhandenen Blackboards
 @app.route('/deleteAllBlackboards')
 def delete_all_blackboard():
     blackboards.clear()

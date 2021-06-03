@@ -9,21 +9,19 @@
     <!-- Sichtbarer Dokumentinhalt im body -->
     <h1>Willkommen auf unserer Blackboard Seite!</h1>
     <h4>Um ein neues Blackboard zu erstellen (name: Name des Blackboards, gueltigkeit: Ablaufzeit in Sekunden): </h4>
-    <p>http://127.0.0.1:5000/createBlackboard?name=myblackboard&gueltigkeit=50</p>
-
+    <p>http://localhost:5000/createBlackboard?name=Name_des_Blackboards&gueltigkeit=Dauer_der_Gültigkeit_des_Blackboards_in_Sekunden</p>
     <hr>
-
     <h4>Aktualisiert den Inhalt und Zeitstempel des Blackboard (name: Name des Blackboards, daten: neue Information): </h4>
-    <p>http://127.0.0.1:5000/displayBlackboard?name=myblackboard&daten=welcomeetoooyouuu</p>
+    <p>http://localhost:5000/displayBlackboard?name=Name_des_Blackboards&daten=Daten_des_Blackboards</p>
     <hr>
     <h4>Liest den Inhalt eines Blackboards aus. Zusätzlich wird die Gültigkeit der Daten signalisiert. Wenn Nachricht veraltet ist wird diese Information gegeben (name: Name des Blackboards): </h4>
-    <p>http://127.0.0.1:5000/readBlackboard?name=myblackboard </p>
+    <p>http://localhost:5000/readBlackboard?name=Name_des_Blackboards </p>
     <hr>
     <h4>Löscht den Inhalt eines Blackboards. Blackboard ist nicht mehr Gültig  (name: Name des Blackboards):</h4>
-    <p>http://127.0.0.1:5000/clearBlackboard?name=myblackboard</p>
+    <p>http://localhost:5000/clearBlackboard?name=Name_des_Blackboards</p>
     <hr>
     <h4>Gibt den aktuellen Status eines Blackboards zurück (name: Name des Blackboards):</h4>
-    <p>http://localhost:5000/getBlackboardStatus?name=myblackboard</p>
+    <p>http://localhost:5000/getBlackboardStatus?name=Name_des_Blackboards</p>
     <hr>
     <h4>Gibt eine Übersicht über alle vorhandenen Blackboard zurück: </h4>
     <p>http://localhost:5000/listBlackboards</p>
